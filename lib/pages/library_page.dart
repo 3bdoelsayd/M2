@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/customer_record.dart';
 import '../services/storage_service.dart';
+import 'kitchen_designer_page.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -146,6 +147,21 @@ class _LibraryPageState extends State<LibraryPage> {
                         Expanded(child: Text('ملاحظات: ${record.notes}', style: GoogleFonts.cairo(fontSize: 13, color: Colors.orange.shade900))),
                       ],
                     ),
+                  ),
+                ),
+              if (record.designComponents != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(c);
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (ctx) => KitchenDesignerPage(customer: record),
+                      ));
+                    },
+                    icon: const Icon(Icons.architecture),
+                    label: Text("عرض مخطط المطبخ", style: GoogleFonts.cairo()),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white),
                   ),
                 ),
               const Divider(height: 30),

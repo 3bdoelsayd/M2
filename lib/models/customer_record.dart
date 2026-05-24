@@ -1,4 +1,5 @@
 import 'band_item.dart';
+import 'kitchen_design.dart';
 
 class CustomerRecord {
   final String id;
@@ -9,6 +10,7 @@ class CustomerRecord {
   final String notes;
   final DateTime date;
   final List<BandItem> items;
+  final List<KitchenComponent>? designComponents; // حقل جديد لحفظ الرسمة
 
   CustomerRecord({
     required this.id,
@@ -19,6 +21,7 @@ class CustomerRecord {
     this.notes = '',
     required this.date,
     required this.items,
+    this.designComponents,
   });
 
   double get totalAmount => items.fold(0, (sum, item) => sum + item.total);
@@ -33,6 +36,7 @@ class CustomerRecord {
     'notes': notes,
     'date': date.toIso8601String(),
     'items': items.map((e) => e.toJson()).toList(),
+    'designComponents': designComponents?.map((e) => e.toJson()).toList(),
   };
 
   factory CustomerRecord.fromJson(Map<String, dynamic> json) => CustomerRecord(
@@ -43,6 +47,11 @@ class CustomerRecord {
     paidAmount: (json['paidAmount'] ?? 0).toDouble(),
     notes: json['notes'] ?? '',
     date: DateTime.parse(json['date']),
-    items: (json['items'] as List).map((e) => BandItem.fromJson(e)).toList(),
+    items: json['items'] != null 
+        ? (json['items'] as List).map((e) => BandItem.fromJson(e)).toList()
+        : [],
+    designComponents: json['designComponents'] != null
+        ? (json['designComponents'] as List).map((e) => KitchenComponent.fromJson(e)).toList()
+        : null,
   );
 }
